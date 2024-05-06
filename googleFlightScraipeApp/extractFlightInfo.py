@@ -119,36 +119,37 @@ def to_csv(departure, infos, mode):
     print('Finished extract')
 
 
-
-# if __name__ == '__main__':
-
-SEC = 1
-
 departure = 'GMP'
 departure = 'SYD'
 departure = 'LHR'
 departure = 'JFK'
 departure = 'SIN'
 departure = 'KUL'
+departure = 'CGK'
+departure = 'HKG'
+departure = 'TPE'
 
-departures = ['SYD', 'GMP', 'SIN', 'KUL']
+departures = ['HND', 'NRT', 'HKG', 'TPE', 'CGK', 'SYD', 'GMP', 'SIN', 'KUL']
 
-driver, actionChains = start_google_chrome_with_port(GOOGLE_URL)
+SEC = 2
 
-driver.get(urls['ana'])
+if __name__ == '__main__':
 
-period_input(SEC, period['1week'], dates['allMonth'], driver)
+    driver, actionChains = start_google_chrome_with_port(GOOGLE_URL)
+    
+    driver.get(urls['ana'])
 
-for j, departure in enumerate(departures):
+    for i, (k, v) in enumerate(dates.items()):
 
-    input_departure(SEC, departure, driver)
+        # period_input(SEC, period['1week'], dates['allMonth'], driver)
+        period_input(SEC, period['1week'], dates[k], driver)
 
-    infos = extract_information(SEC, departure, driver)
+        for j, departure in enumerate(departures):
 
-    to_csv(FILE_NAME, infos, 'a')
+            input_departure(SEC, departure, driver)
+            infos = extract_information(SEC, departure, driver)
+            to_csv(FILE_NAME, infos, 'a')
+            print(f'The {j+1} session has ended.')
+    print(f'All session has ended.')
 
-    print(f'The {j+1} session has ended.')
-
-print(f'All session has ended.')
-
-driver.quit()
+    driver.quit()
